@@ -1,0 +1,67 @@
+import json
+from pathlib import Path
+
+bg_json = Path("D:/mix/merged_dataset.json")
+
+with open(bg_json, "r", encoding="utf-8") as f:
+    data = json.load(f)
+
+# 집합(set)으로 중복 없이 카운트
+categories = set()
+subcategories = set()
+comments = set()
+
+for item in data:
+    if "sound_category" in item:
+        categories.add(item["sound_category"])
+    if "sound_subcategory" in item:
+        subcategories.add(item["sound_subcategory"])
+    if "sound_comment" in item:
+        comments.add(item["sound_comment"])
+
+print(f"sound_category 종류 수: {len(categories)}")
+print(f"종류 목록: {sorted(categories)}\n")
+print(f"sound_subcategory 종류 수: {len(subcategories)}")
+print(f"종류 목록: {sorted(subcategories)}\n")
+print(f"sound_comment 종류 수: {len(comments)}")
+print(f"종류 목록: {sorted(comments)}")
+
+
+
+
+import json
+from pathlib import Path
+from collections import Counter
+
+bg_json = Path("D:/mix/merged_dataset.json")
+
+with open(bg_json, "r", encoding="utf-8") as f:
+    data = json.load(f)
+
+# sound_comment별 카운트
+comments = [item.get("sound_comment", "") for item in data if "sound_comment" in item]
+comment_counts = Counter(comments)
+
+# 많이 등장한 순으로 출력
+for comment, count in comment_counts.most_common():
+    print(f"{comment}: {count}개")
+
+
+
+import json
+from pathlib import Path
+from collections import Counter
+
+bg_json = Path("D:/mix/merged_dataset.json")
+
+with open(bg_json, "r", encoding="utf-8") as f:
+    data = json.load(f)
+
+comments = [item.get("sound_comment", "") for item in data if "sound_comment" in item]
+comment_counts = Counter(comments)
+
+# 100 초과는 100으로 치고 합산
+total = sum(min(count, 10) for count in comment_counts.values())
+
+print(f"모든 sound_comment의 (최대 100) 합계: {total}")
+
